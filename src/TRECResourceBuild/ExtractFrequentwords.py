@@ -12,7 +12,7 @@ from nltk.probability import FreqDist
 import nltk
 from bs4 import BeautifulSoup
 from rope.base.resources import Folder
-root_path = "C:/Users/Owner/eclipse-workspace/TRECResourceBuild/input_docs"
+root_path = "$/TRECResourceBuild/input_docs"
 from nltk.tokenize import RegexpTokenizer
 
 my_list = []
@@ -77,5 +77,5 @@ for folders in TRECfiles:
     print(my_list)
 unique_set = set(my_list)          
 print("Printing.......")
-with open('stopwords.txt', 'w') as f:
+with open('topwords.txt', 'w') as f:
     print(unique_set, file=f)
