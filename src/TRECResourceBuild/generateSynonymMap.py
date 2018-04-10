@@ -1,7 +1,7 @@
 '''
 Created on 7 Apr 2018
 
-@author: Owner
+@author: Nabanita
 '''
 import nltk
 from nltk.tokenize import RegexpTokenizer
@@ -10,11 +10,11 @@ from nltk.corpus import words
 from nltk.corpus import wordnet as wn
 from nltk.corpus import stopwords
 
-st = StanfordNERTagger('C:/Users/Owner/eclipse-workspace/TopicModelling/stanford-ner-2018-02-27/classifiers/english.muc.7class.distsim.crf.ser.gz',
-                       'C:/Users/Owner/eclipse-workspace/TopicModelling/stanford-ner-2018-02-27/stanford-ner.jar',
+st = StanfordNERTagger('$/TopicModelling/stanford-ner-2018-02-27/classifiers/english.muc.7class.distsim.crf.ser.gz',
+                       '$/stanford-ner-2018-02-27/stanford-ner.jar',
                        encoding='utf-8')
 
-file_path = "C:/Users/Owner/eclipse-workspace/TRECResourceBuild/src/TRECResourceBuild/stopwords.txt"
+file_path = "$/TRECResourceBuild/src/TRECResourceBuild/topwords.txt"
 
 
 token_list = []
@@ -29,7 +29,7 @@ tokens = tokenizer.tokenize(lines[0])
 
 #for some document numbers appeared - To remove document numbers
 for token in tokens:
-    if "LA" not in token:
+    if "LA" not in token and "FR" not in token:
         token_list.append(token)
 classified_text = st.tag(token_list)
 
@@ -40,16 +40,10 @@ for text in classified_text:
 tagged_text = nltk.pos_tag(final_list)
 
 #To filter numbers
-fresh_list = []
+legitimate_words = []
 for text in tagged_text:
     if 'CD' not in text[1]:
-        fresh_list.append(text[0])
-        
-#Clean the list by keeping only the english words and removing stopwprds
-stop_Words = set(stopwords.words('english'))
-english_words = set(nltk.corpus.words.words())
-set_words = set(fresh_list)
-legitimate_words = english_words.intersection(set_words) - stop_Words
+        legitimate_words.append(text[0])
 
 #remove alphabets from the collection
 for eachword in legitimate_words.copy():
@@ -66,10 +60,10 @@ for word in legitimate_words:
             synonyms.append(each)
     set_syns = set(synonyms)
     syn_string = ','.join(set_syns)
-    string_builder.append(syn_string + '\n')
+    string_builder.append(word + '=>' + syn_string + '\n')
 #print(string_builder)
 
 #Save to file
-with open('synonyms.txt', 'w') as f:
+with open('synonyms_corrected.txt', 'w') as f:
     print(string_builder, file=f)
 print("Done...")
